@@ -21,8 +21,10 @@ FROM nginx
 
 EXPOSE 3000
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx/ssl/localhost.crt /etc/ssl/certs/localhost.crt
+COPY ./nginx/ssl/localhost.key /etc/ssl/private/localhost.key
 COPY --from=builder /app/build /usr/share/nginx/html
 
 # docker build -f Dockerfile -t client .
-# docker run -it -p 3000:3000 client
+# docker run -it -p 80:80 -p 443:443 client
 
