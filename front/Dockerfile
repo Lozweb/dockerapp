@@ -1,5 +1,5 @@
-# get image nodejs
-FROM node:20.3.1-alpine3.17
+# get image nodejs and set image as builder
+FROM node:20.3.1-alpine3.17 as builder
 
 # set working directory
 WORKDIR /app
@@ -13,8 +13,15 @@ RUN npm i
 # copy source file to /app in container
 COPY . .
 
-# start app
-CMD ["npm", "run", "start"]
+# build app
+RUN npm run build
+
+# get image nginx
+FROM nginx
+
+EXPOSE 3000
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/build /usr/share/nginx/html
 
 # docker build -f Dockerfile -t client .
 # docker run -it -p 3000:3000 client
