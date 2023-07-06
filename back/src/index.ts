@@ -24,7 +24,10 @@ app.use(compression());
 
 app.use(express.json());
 
-app.get("/", (req:Request, res:Response) => res.send("I working!"))
+app.get("/", (req:Request, res:Response) => {
+    console.log("receive call on /")
+    res.send({message : "I working!"})
+})
 https.createServer(options, app).listen(config.API_PORT, () => {
     console.log(`Le serveur démarre sur le port ${config.API_PORT}`);
 });
