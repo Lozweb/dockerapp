@@ -1,5 +1,10 @@
 # dependecies
 /node_modules
+ssl
 
 # production file
 /dist
+
+# misc
+.env
+

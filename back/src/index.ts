@@ -1,8 +1,16 @@
 import express, {Request, Response} from "express";
 import cors from "cors";
 import compression from "compression";
+import * as https from "https";
+import { readFileSync } from "fs";
+import { config } from "@/config";
 
 const app = express();
+
+const options = {
+    key: readFileSync(`/etc/letsencrypt/live/${config.DOMAINE}/localhost.key`,"utf-8"),
+    cert: readFileSync(`/etc/letsencrypt/live/${config.DOMAINE}/localhost.crt`,"utf-8")
+};
 
 const corsOption: cors.CorsOptions = {
     origin: "*",
@@ -17,4 +25,6 @@ app.use(compression());
 app.use(express.json());
 
 app.get("/", (req:Request, res:Response) => res.send("I working!"))
-app.listen(5000, () => console.log("Listening") );
+https.createServer(options, app).listen(config.API_PORT, () => {
+    console.log(`Le serveur démarre sur le port ${config.API_PORT}`);
+});

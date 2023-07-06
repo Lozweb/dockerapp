@@ -7,6 +7,10 @@ WORKDIR /app
 # copy package.json to /app in container
 COPY ./package.json ./
 
+# copy ssl key & cert in container
+COPY ./ssl/localhost.crt /etc/letsencrypt/live/localhost/localhost.crt
+COPY ./ssl/localhost.key /etc/letsencrypt/live/localhost/localhost.key
+
 # run npm install
 RUN npm i
 
