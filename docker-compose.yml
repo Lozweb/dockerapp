@@ -1,14 +1,13 @@
-version: "3.8"
+version: "3"
 
 services:
+
   postgres:
     container_name: postgres
     image: postgres:latest
-    stdin_open: true
-    tty: true
     restart: always
     environment:
-      - DATABASE_HOST=localhost
+      - DATABASE_HOST=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=root
       - POSTGRES_DB=postgres
@@ -19,29 +18,17 @@ services:
 
   back:
     container_name: back
-    build:
-      dockerfile: Dockerfile
-      context: "./back"
-    depends_on:
-      - postgres
+    build: ./back
     ports:
       - "5000:5000"
-    volumes:
-      - /app/node_modules
-      - ./back:/app
+    links:
+      - postgres
 
 
   client:
     container_name: client
-    stdin_open: true
-    build:
-      dockerfile: Dockerfile
-      context: "./front"
-    depends_on:
-      - back
+    build: ./front
     ports:
-      - "80:80"
-      - "443:433"
-    volumes:
-      - /app/node_modules
-      - ./front:/app
+      - "443:443"
+    links:
+      - back

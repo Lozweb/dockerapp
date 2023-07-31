@@ -6,6 +6,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { readFileSync } from "fs";
 import {config, pool} from "@/config";
+import {env} from "@/dotenv";
 
 const app = express();
 
@@ -30,6 +31,10 @@ app.post("/install", async (req:Request, res:Response) => {
     try{
         const table_install = fs.readFileSync(path.join(__dirname, "../script/table.sql")).toString();
         console.log(table_install)
+
+
+        console.log(`PG_HOST:${env.PG_HOST} PG_DATABASE:${env.PG_DATABASE} PG_USER:${env.PG_USER} PG_PASS:${env.PG_PASS} PG_PORT:${env.PG_PORT}`)
+
         await pool.query(table_install);
         return res.status(200).json({message: "table install success!"})
     } catch (e) {

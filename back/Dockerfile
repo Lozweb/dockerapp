@@ -16,6 +16,7 @@ RUN npm i
 
 # copy source file to /app in container
 COPY . .
+COPY .env .env
 
 # build project production
 RUN npm run build

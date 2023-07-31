@@ -2,6 +2,6 @@
 echo "Start backend application"
 cd ..
 # shellcheck disable=SC2164
-cd back
+cd postgres
 pwd
-docker run -d --rm -p 5000:5000 back
+docker run -rm --name database -p 5432:5432 -d database
